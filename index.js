@@ -43,15 +43,10 @@ async function run() {
       res.send(result);
     });
 
-    app.post("/volunteer/:id", async (req, res) => {
-      const data = req.body;
-      // console.log(data);
-      const result = await volunteerCollecetion.insertOne(data);
-      res.send(result);
-    });
-
     app.get("/events", async (req, res) => {
-      const query = {};
+      const emailQuery = req.query.email;
+      // console.log(emailQuery);
+      const query = { email: emailQuery };
       const cursor = volunteerCollecetion.find(query);
       const result = await cursor.toArray();
       res.send(result);
@@ -62,6 +57,27 @@ async function run() {
       const query = { _id: new ObjectId(id) };
       const cursor = await networkCollection.findOne(query);
       res.send(cursor);
+    });
+
+    app.get("/search", async (req, res) => {
+      const query = req.query.toLowerCase();
+      const result = await networkCollection.filter((collection) =>
+        collection.includes(query).toLowerCase()
+      );
+      res.send(result);
+    });
+
+    app.post("/volunteer/:id", async (req, res) => {
+      const data = req.body;
+      // console.log(data);
+      const result = await volunteerCollecetion.insertOne(data);
+      res.send(result);
+    });
+
+    app.post("/addCharity", async (req, res) => {
+      const data = req.body;
+      const result = await networkCollection.insertOne(data);
+      res.send(result);
     });
 
     app.delete("/event/:id", async (req, res) => {
