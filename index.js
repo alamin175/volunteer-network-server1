@@ -14,9 +14,16 @@ app.get("/", (req, res) => {
   res.send("Volunteer network are coming");
 });
 
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.kflht43.mongodb.net/?retryWrites=true&w=majority`;
+{
+  /** open this code when you can deploy server and database also 
 
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
+// const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.kflht43.mongodb.net/?retryWrites=true&w=majority`;
+*/
+}
+
+const uri =
+  "mongodb+srv://network:P5LKKDDkM76DU5YZ@cluster0.kflht43.mongodb.net/?retryWrites=true&w=majority";
+
 const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
@@ -59,13 +66,13 @@ async function run() {
       res.send(cursor);
     });
 
-    app.get("/search", async (req, res) => {
-      const query = req.query.toLowerCase();
-      const result = await networkCollection.filter((collection) =>
-        collection.includes(query).toLowerCase()
-      );
-      res.send(result);
-    });
+    // app.get("/search", async (req, res) => {
+    //   const query = req.query.toLowerCase();
+    //   const result = await networkCollection.filter((collection) =>
+    //     collection.includes(query).toLowerCase()
+    //   );
+    //   res.send(result);
+    // });
 
     app.post("/volunteer/:id", async (req, res) => {
       const data = req.body;
